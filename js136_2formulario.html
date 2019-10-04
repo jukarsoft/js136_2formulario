@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>formulario y buttons</title>
+	<style type="text/css">
+		#formu {
+			width: 850px;
+			border: 1px solid blue;
+			background-color: lightgrey;
+			margin:auto;
+			padding: 10px;
+			box-shadow: 5px solid blue;
+		}
+		label {
+			width: 150px;
+			display: inline-block;
+			line-height: 20px;
+			margin-bottom: 10px;
+			margin-right: 25px;
+		}
+		#radio {
+			width: 55px;
+			margin-right: 2px;
+		}
+		input {
+			width: 350px;
+		}
+		.bordes {
+				border-radius: 10px;
+		}
+		input[type=text] {
+				width: 70%;
+				padding: 0px 0px;
+				margin: 8px 0; 
+				box-sizing: border-box;
+		}
+		input[type=button] {
+				width: 100px;
+				padding: 10px 15px 10px 15px;
+				display: flex;
+				margin:auto;
+				background-color: grey;
+				align-content: center;
+		}
+		input[type=radio] {
+				width: 15px;
+				border:1px solid blue;
+				
+		}
+		textarea, p {
+			width: 95%;
+			padding: 0px;
+			margin-top: 0px;
+		}
+		#pedido {overflow: scroll;}
+	</style>
+
+	<script type="text/javascript">
+		materiales = ['Plástico', 'Madera', 'Aluminio', 'Acero', 'Platino'];
+		precioMaterial = [5, 10, 20, 25, 200];
+		
+		//función para entrada del formulario y calculo del pedido
+		function enviaPedido() {
+
+			//recuperar los datos
+			var nombre = document.getElementById('nombre').value;
+			/*var producto = document.getElementById('material').value; */
+/*
+			//buscar en la tabla el articulo seleccionado
+			var salir=false;
+			h=0;
+			do {
+				if (producto == materiales[h]) {
+					salir=true;
+				}else {h++};
+			} while (salir==false);
+*/			
+			//segun teacher
+			//			console.log(document.getElementById('material'));
+			//recuperar nombre del producto
+			var indice = document.getElementById('material').selectedIndex;
+			var producto = document.getElementById('material')[indice].innerText;
+			//se obtiene el precio del material 
+			var precioProducto= parseInt(document.getElementById('material').value);
+			
+			//obtener radio button seleccionado
+			var i;
+			var seleccionado=(document.formu.caja);
+			for (i in seleccionado) {
+				if (seleccionado[i].checked) {
+		  			break;
+		  		}
+			}
+
+			//obtener precio de la caja
+			var precioCaja=0;
+			switch (seleccionado[i].value) {
+				case 'Pequeña':
+						precioCaja=0;
+						break;
+				case 'Mediana':
+						precioCaja=20;
+						break;
+				case 'Grande':
+						precioCaja=50;
+						break;
+				default: precioCaja=0;
+			}
+
+			if (nombre.trim() =='') {
+				document.getElementById('pedido').value = 'hay que introducir el nombre del cliente'
+				console.log(document.formu.nombre);
+				console.log(document.formu.material);
+				alert('Nombre del cliente es obligatorio');
+			} else {
+				//calcular precio total
+				var total=precioCaja+precioProducto;
+				//Montar salida a formulario
+				document.getElementById('total').value = `${total}`;
+				document.getElementById('pedido').value = `${nombre.trim()} ha pedido una caja de ${producto} de dimension ${seleccionado[i].value}. El precio es de ${total}€. ${document.getElementById('comentarios').value}`;
+			}
+
+		}	
+		function funcTotal() {
+			enviaPedido();
+		}
+	</script>
+</head>
+
+<body>
+	<main>
+		<form class="bordes method="get" action="#" name="formu" id="formu">
+			<label>Nombre del cliente </label>
+			<input type="text" name="nombre" placeholder="introduce nombre del cliente" id="nombre" required>
+			<br>
+			<label>Material de la caja</label>
+				<select id="material" name="material" required onchange="funcTotal()">
+					  				<option value='5'>Plástico</option>
+					  				<option value='10'>Madera</option>
+					  				<option value='20'>Aluminio</option>
+					  				<option value='25'>Acero</option>
+					  				<option value='200'>Platino</option>
+		 		</select>
+		 	<br>
+		 	<label >Dimensiones de la caja</label>
+
+		 	<label id="radio">Pequeña</label>	
+		 	<input type="radio" name="caja" value="Pequeña" id="caja" checked onchange="funcTotal()">
+			
+			<label id="radio">Mediana</label>
+			<input type="radio" name="caja" value="Mediana" id="caja" onchange="funcTotal()">
+				
+			<label id="radio">Grande</label>
+			<input type="radio" name="caja" value="Grande" id="caja" onchange="funcTotal()">
+			<br>
+			<label>Comentarios</label>
+			 <p><textarea name="descripcion" rows="10" id="comentarios" id="area"></textarea></p>
+			<br>
+			<input type="button" name="envio" value="ENVIAR...." onclick="enviaPedido()">
+			<br>
+			<label>TOTAL</label>
+			<input type="number" name="total" id="total" disabled>
+			<br>
+			<label >Muestra Pedido</label> 
+			<input type="text" name="pedido" placeholder="" id="pedido" style="width: 90%" disabled >
+			<br>
+		</form>
+	</main>
+</body>
+</html>
